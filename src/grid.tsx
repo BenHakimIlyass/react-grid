@@ -40,7 +40,7 @@ const withBreakpoints = (
     return;
   } else if (typeof style === "object") {
     return css`
-      ${Object.keys(style).map((objKey, index) => {
+      ${Object.keys(style).map((objKey, _) => {
         //  Wrapp breakpoints
         return css`@media only screen and (min-width: ${[objKey]}px) {
         ${styleName}:${style[objKey]};
