@@ -21,32 +21,31 @@ type Props = {
   area?: StyleProps;
   rem?: boolean | undefined;
 };
+
 const handleUnit = (rem: boolean | undefined): string => (rem ? "rem" : "px");
-const handleDeviceSizes = (style: StyleProps, styleName: string) => {
-  console.log("style", style);
-  console.log("styleName", styleName);
+const handleDeviceSizes = (style?: StyleProps, styleName?: string) => {
+  //  Check the type of the style object
   if (
-    typeof style !== "object" &&
-    typeof style !== "string" &&
-    typeof style !== "number"
+    (typeof style !== "object" &&
+      typeof style !== "string" &&
+      typeof style !== "number") ||
+    typeof styleName !== "string"
   ) {
     return;
   } else if (typeof style === "object") {
     return css`
       ${Object.keys(style).map((objKey, index) => {
-        console.log("media:", objKey);
-        console.log("index:", index);
-        console.log("inner style:", style[objKey]);
+        //  Wrapp breakpoints
         return css`@media only screen and (min-width: ${[objKey]}px) {
         ${styleName}:${style[objKey]};
       }`;
       })}
     `;
   } else {
-    const WrapStyle = css`
+    //if not object detected we return the original style
+    return css`
       ${styleName}: ${style};
     `;
-    return WrapStyle;
   }
 };
 const Grid = styled.divBox<Props>`
