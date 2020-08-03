@@ -6,7 +6,12 @@ import Grid from "./grid";
 export default function App() {
   return (
     <div className="App">
-      <Grid rows="100px 100px" cols="100px 100px" xgap={200} ygap={180}>
+      <Grid
+        rows={{ 300: "100px 100px", 500: "50px" }}
+        cols="100px 100px"
+        xgap={200}
+        ygap={180}
+      >
         <Square />
         <Square />
         <Square />
