@@ -1,6 +1,8 @@
 import styled, { css } from "@xstyled/styled-components";
 import * as CSS from "csstype";
 
+/**@author Ilyass Ben Hakim <ilyassbenhakim2@gmail.com> */
+
 interface Metadata {
   key: string;
   value: CSS.Properties;
@@ -22,8 +24,12 @@ type Props = {
   rem?: boolean | undefined;
 };
 
-const handleUnit = (rem: boolean | undefined): string => (rem ? "rem" : "px");
-const handleDeviceSizes = (style?: StyleProps, styleName?: string) => {
+const handleUnit = (rem?: boolean): string => (rem ? "rem" : "px");
+const withBreakpoints = (
+  style?: StyleProps,
+  styleName?: string,
+  rem?: boolean
+) => {
   //  Check the type of the style object
   if (
     (typeof style !== "object" &&
@@ -42,7 +48,13 @@ const handleDeviceSizes = (style?: StyleProps, styleName?: string) => {
       })}
     `;
   } else {
-    //if not object detected we return the original style
+    // if the type of style is number, then we have to handle the unit (rem or px)
+    if (typeof style === "number") {
+      return css`
+        ${styleName}: ${style + handleUnit(rem)};
+      `;
+    }
+    //if no object detected we return the original style
     return css`
       ${styleName}: ${style};
     `;
@@ -50,15 +62,15 @@ const handleDeviceSizes = (style?: StyleProps, styleName?: string) => {
 };
 const Grid = styled.divBox<Props>`
   display: grid;
-  ${({ rows }: Partial<Props>) => handleDeviceSizes(rows, "grid-template-rows")}
-  ${({ cols }: Partial<Props>) => cols && `grid-template-columns:${cols};`}
-  ${({ areas }: Partial<Props>) => areas && `grid-areas:${areas};`}
-  ${({ area }: Partial<Props>) => area && `grid-area:${area};`}
+  ${({ rows }: Partial<Props>) => withBreakpoints(rows, "grid-template-rows")}
+  ${({ cols }: Partial<Props>) =>
+    withBreakpoints(cols, "grid-template-columns")}
+  ${({ areas }: Partial<Props>) => withBreakpoints(areas, "grid-areas")}
+  ${({ area }: Partial<Props>) => withBreakpoints(area, "grid-area")}
   ${({ ygap, rem }: Partial<Props>) =>
-    ygap && `grid-column-gap:${ygap}${handleUnit(rem)};`}
+    withBreakpoints(ygap, "grid-column-gap", rem)}
   ${({ xgap, rem }: Partial<Props>) =>
-    xgap && `grid-row-gap:${xgap}${handleUnit(rem)};`}
-  ${({ gap, rem }: Partial<Props>) =>
-    gap && `grid-gap:${gap}${handleUnit(rem)};`}
+    withBreakpoints(xgap, "grid-row-gap", rem)}
+  ${({ gap, rem }: Partial<Props>) => withBreakpoints(gap, "grid-gap", rem)}
 `;
 export default Grid;

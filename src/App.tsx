@@ -7,9 +7,9 @@ export default function App() {
   return (
     <div className="App">
       <Grid
-        rows={{ 300: "100px 100px", 500: "50px" }}
+        rows={"100px 100px"}
         cols="100px 100px"
-        xgap={200}
+        xgap={{ 300: 200, 500: 500 }}
         ygap={180}
       >
         <Square />
