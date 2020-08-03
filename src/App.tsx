@@ -9,8 +9,9 @@ export default function App() {
       <Grid
         rows="100px 100px"
         cols="100px 100px"
-        xgap={{ 300: 200, 500: 500 }}
+        xgap={{ 0: 20, 500: 50 }}
         ygap={180}
+        rem
       >
         <Square />
         <Square />

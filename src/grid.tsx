@@ -43,7 +43,11 @@ const withBreakpoints = (
       ${Object.keys(style).map((objKey, _) => {
         //  Wrapp breakpoints
         return css`@media only screen and (min-width: ${[objKey]}px) {
-        ${styleName}:${style[objKey]};
+        ${styleName}:${
+          typeof style[objKey] === "number"
+            ? style[objKey] + handleUnit(rem)
+            : style[objKey]
+        };
       }`;
       })}
     `;
@@ -60,7 +64,7 @@ const withBreakpoints = (
     `;
   }
 };
-const Grid = styled.divBox<Props>`
+const Grid = styled.box<Props>`
   display: grid;
   ${({ rows }: Partial<Props>) => withBreakpoints(rows, "grid-template-rows")}
   ${({ cols }: Partial<Props>) =>
